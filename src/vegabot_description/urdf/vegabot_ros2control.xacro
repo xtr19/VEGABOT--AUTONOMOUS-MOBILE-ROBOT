@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot name="vegabot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <ros2_control name="RobotSystem" type="system">
+
+        <!-- ros2_control Gazebo -->
+        <xacro:if value="$(arg is_sim)">
+            <hardware>
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
+            </hardware>
+        </xacro:if>
+
+        <!-- ros2_control Real Robot -->
+        <xacro:unless value="$(arg is_sim)">
+            <hardware>
+                <plugin>vegabot_firmware/VegabotInterface</plugin>
+                <param name="port">/dev/ttyUSB1</param>
+            </hardware>
+        </xacro:unless>
+
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-2.0</param>
+                <param name="max">2.0</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+
+        <joint name="left_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-2.0</param>
+                <param name="max">2.0</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+
+  </ros2_control>
+
+</robot>
